@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('report_logs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('report_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('old_status')->nullable();
-            $table->string('new_status')->nullable();
-            $table->text('notes')->nullable(); // Untuk catatan relawan/koordinator
-            $table->timestamps();
-        });
+    Schema::create('report_logs', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('report_id')->constrained()->cascadeOnDelete();
+        $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+        $table->string('old_status', 30)->nullable();
+        $table->string('new_status', 30);
+        $table->timestamps();
+    });
     }
 
     /**

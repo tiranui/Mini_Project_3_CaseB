@@ -29,6 +29,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function isPelapor(): bool     { return $this->role === 'pelapor'; }
+    public function isRelawan(): bool     { return $this->role === 'relawan'; }
+    public function isKoordinator(): bool { return $this->role === 'koordinator'; }
     public function reports() {
     return $this->hasMany(Report::class);
     }

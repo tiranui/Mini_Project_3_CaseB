@@ -13,9 +13,8 @@ return new class extends Migration
     {
     Schema::create('areas', function (Blueprint $table) {
         $table->id();
-        $table->string('name'); // Contoh: Kecamatan A, Kawasan Hutan B
-        $table->decimal('latitude', 10, 8);
-        $table->decimal('longitude', 11, 8);
+        $table->string('name')->unique();
+        $table->text('description')->nullable();
         $table->timestamps();
     });
     }
