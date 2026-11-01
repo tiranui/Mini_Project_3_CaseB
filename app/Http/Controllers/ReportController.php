@@ -7,6 +7,8 @@ use App\Models\Area;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
@@ -37,5 +39,20 @@ class ReportController extends Controller
         $request->user()->reports()->create($data);
 
         return redirect()->route('reports.index')->with('success', 'Laporan berhasil dikirim.');
+    }
+        public function show(Report $report)
+    {
+        Gate::authorize('view', $report);
+        $report->load(['area', 'user']);
+
+        return view('reports.show', compact('report'));
+    }
+
+    public function evidence(Report $report)
+    {
+        Gate::authorize('view', $report);
+        abort_unless($report->evidence_path && Storage::exists($report->evidence_path), 404);
+
+        return Storage::response($report->evidence_path);
     }
 }

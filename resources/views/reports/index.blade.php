@@ -15,9 +15,15 @@
 
             <div class="bg-white shadow sm:rounded-lg p-4 overflow-x-auto">
                 <table class="min-w-full text-sm">
-                    <thead><tr class="text-left border-b">
-                        <th class="p-2">Judul</th><th class="p-2">Area</th><th class="p-2">Status</th><th class="p-2">Waktu</th>
-                    </tr></thead>
+                    <thead>
+                        <tr class="text-left border-b">
+                            <th class="p-2">Judul</th>
+                            <th class="p-2">Area</th>
+                            <th class="p-2">Status</th>
+                            <th class="p-2">Waktu</th>
+                            <th class="p-2"></th>
+                        </tr>
+                    </thead>
                     <tbody>
                     @forelse ($reports as $report)
                         <tr class="border-b">
@@ -25,9 +31,12 @@
                             <td class="p-2">{{ $report->area->name }}</td>
                             <td class="p-2">{{ str_replace('_', ' ', $report->status) }}</td>
                             <td class="p-2">{{ $report->occurred_at->format('d M Y H:i') }}</td>
+                            <td class="p-2">
+                                <a class="text-blue-600" href="{{ route('reports.show', $report) }}">Detail</a>
+                            </td>
                         </tr>
                     @empty
-                        <tr><td colspan="4" class="p-2">Belum ada laporan.</td></tr>
+                        <tr><td colspan="5" class="p-2">Belum ada laporan.</td></tr>
                     @endforelse
                     </tbody>
                 </table>

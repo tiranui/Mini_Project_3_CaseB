@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
+    public const MENUNGGU_REVIEW = 'menunggu_review';
+    public const SEDANG_DITINJAU = 'sedang_ditinjau';
+    public const PERLU_TINDAKAN = 'perlu_tindakan';
+    public const SELESAI = 'selesai';
+
     public const STATUSES = [
         self::MENUNGGU_REVIEW, self::SEDANG_DITINJAU, self::PERLU_TINDAKAN, self::SELESAI,
     ];
