@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         Route::get('/areas/{area}/info', [AreaController::class, 'info'])->name('areas.info');
+
+        Route::get('/recap', [RecapController::class, 'index'])
+        ->middleware('role:koordinator')->name('recap');
     });
 });
 
