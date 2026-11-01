@@ -8,6 +8,7 @@
             <option value="{{ $area->id }}" @selected(old('area_id', $report?->area_id) == $area->id)>{{ $area->name }}</option>
         @endforeach
     </select>
+    <p id="area-info" class="mt-2 text-sm text-gray-600"></p>
     <x-input-error :messages="$errors->get('area_id')" class="mt-2" />
 </div>
 
@@ -51,3 +52,27 @@
     @endif
     <x-input-error :messages="$errors->get('evidence')" class="mt-2" />
 </div>
+
+<script>
+    const areaSelect = document.getElementById('area_id');
+    const areaInfo = document.getElementById('area-info');
+
+    async function loadAreaInfo() {
+        if (!areaSelect.value) { areaInfo.textContent = ''; return; }
+        areaInfo.textContent = 'Memuat...';
+        try {
+            const res = await fetch(`{{ url('/areas') }}/${areaSelect.value}/info`, {
+                headers: { 'Accept': 'application/json' },
+                credentials: 'same-origin'
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const data = await res.json();
+            areaInfo.textContent = `Laporan aktif di ${data.area}: ${data.active_reports}`;
+        } catch (e) {
+            areaInfo.textContent = 'Gagal memuat informasi area.';
+        }
+    }
+
+    areaSelect.addEventListener('change', loadAreaInfo);
+    loadAreaInfo();
+</script>
