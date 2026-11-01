@@ -63,7 +63,26 @@
         <x-primary-button>Catat Penerusan</x-primary-button>
     </form>
 @endif
-            {{-- Tahap 11: tabel riwayat status ditambahkan di sini --}}
+@unless (auth()->user()->isPelapor())
+    <div class="bg-white shadow sm:rounded-lg p-6">
+        <h3 class="font-semibold mb-2">Riwayat Perubahan Status</h3>
+        <table class="min-w-full text-sm">
+            <thead><tr class="text-left border-b">
+                <th class="p-2">Waktu</th><th class="p-2">Dari</th><th class="p-2">Ke</th><th class="p-2">Oleh</th>
+            </tr></thead>
+            <tbody>
+            @foreach ($report->logs as $log)
+                <tr class="border-b">
+                    <td class="p-2">{{ $log->created_at->format('d M Y H:i') }}</td>
+                    <td class="p-2">{{ $log->old_status ?? '-' }}</td>
+                    <td class="p-2">{{ $log->new_status }}</td>
+                    <td class="p-2">{{ $log->user?->name ?? 'sistem' }}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+@endunless
         </div>
     </div>
 </x-app-layout>

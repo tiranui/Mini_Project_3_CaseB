@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 
 class ReportController extends Controller
 {
@@ -134,7 +134,7 @@ public function forward(Request $request, Report $report)
         public function show(Report $report)
     {
         Gate::authorize('view', $report);
-        $report->load(['area', 'user']);
+        $report->load(['area', 'user', 'logs.user']);
 
         return view('reports.show', compact('report'));
     }
