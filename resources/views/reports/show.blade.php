@@ -35,7 +35,34 @@
                 @endif
             </div>
 
-            {{-- Tahap 8: tombol edit, form review & forward ditambahkan di sini --}}
+@if (auth()->user()->isPelapor() && $report->user_id === auth()->id() && $report->isEditable())
+    <a href="{{ route('reports.edit', $report) }}" class="inline-block bg-gray-800 text-white px-4 py-2 rounded">Edit Laporan</a>
+@endif
+
+@if (auth()->user()->isRelawan() && $report->status !== 'selesai')
+    <form method="POST" action="{{ route('reports.review', $report) }}" class="bg-white shadow sm:rounded-lg p-6 space-y-3">
+        @csrf
+        @method('PATCH')
+        <h3 class="font-semibold">Tinjau Laporan</h3>
+        <select name="status" class="border-gray-300 rounded-md shadow-sm block w-full">
+            <option value="sedang_ditinjau">sedang ditinjau</option>
+            <option value="perlu_tindakan">perlu tindakan</option>
+        </select>
+        <textarea name="reviewer_note" rows="3" placeholder="Catatan peninjauan" class="border-gray-300 rounded-md shadow-sm block w-full">{{ old('reviewer_note', $report->reviewer_note) }}</textarea>
+        <x-primary-button>Simpan Peninjauan</x-primary-button>
+    </form>
+@endif
+
+@if (auth()->user()->isKoordinator() && $report->status !== 'selesai')
+    <form method="POST" action="{{ route('reports.forward', $report) }}" class="bg-white shadow sm:rounded-lg p-6 space-y-3">
+        @csrf
+        @method('PATCH')
+        <h3 class="font-semibold">Catat Penerusan Informasi</h3>
+        <input type="text" name="forwarded_to" placeholder="Contoh: BPBD / Manggala Agni / Damkar"
+               class="border-gray-300 rounded-md shadow-sm block w-full" value="{{ old('forwarded_to') }}">
+        <x-primary-button>Catat Penerusan</x-primary-button>
+    </form>
+@endif
             {{-- Tahap 11: tabel riwayat status ditambahkan di sini --}}
         </div>
     </div>

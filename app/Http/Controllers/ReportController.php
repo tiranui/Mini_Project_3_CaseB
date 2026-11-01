@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReportRequest;
+use App\Http\Requests\UpdateReportRequest;
 use App\Models\Area;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules;
 
 class ReportController extends Controller
 {

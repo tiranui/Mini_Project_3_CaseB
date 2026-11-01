@@ -20,6 +20,32 @@ class Report extends Model
         return $query->where('status', '!=', self::SELESAI);
     }
 
+    public const TRANSITIONS = [
+    self::MENUNGGU_REVIEW => [self::SEDANG_DITINJAU],
+    self::SEDANG_DITINJAU => [self::PERLU_TINDAKAN],
+    self::PERLU_TINDAKAN  => [self::SELESAI],
+    self::SELESAI         => [],
+    ];
+
+    public const REVIEWER_STATUSES = [self::SEDANG_DITINJAU, self::PERLU_TINDAKAN];
+
+    // BR-01: laporan hanya bisa diedit pelapor saat menunggu_review
+    public function isEditable(): bool
+    {
+        return $this->status === self::MENUNGGU_REVIEW;
+    }
+
+    public function canTransitionTo(string $newStatus): bool
+    {
+        return in_array($newStatus, self::TRANSITIONS[$this->status] ?? [], true);
+    }
+
+    // BR-02: penerusan info hanya saat perlu_tindakan
+    public function canBeForwarded(): bool
+    {
+        return $this->status === self::PERLU_TINDAKAN;
+    }
+
     protected $fillable = [
         'user_id', 'area_id', 'title', 'description',
         'latitude', 'longitude', 'occurred_at',
