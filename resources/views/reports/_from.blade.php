@@ -43,3 +43,11 @@
            value="{{ old('occurred_at', $report?->occurred_at?->format('Y-m-d\TH:i')) }}">
     <x-input-error :messages="$errors->get('occurred_at')" class="mt-2" />
 </div>
+<div class="mt-4">
+    <x-input-label for="evidence" value="Bukti pendukung (JPG/PNG/PDF, maks 2 MB)" />
+    <input id="evidence" name="evidence" type="file" accept=".jpg,.jpeg,.png,.pdf" class="mt-1 block w-full text-sm">
+    @if ($report?->evidence_path)
+        <p class="text-sm text-gray-600 mt-1">Sudah ada bukti. Unggah file baru untuk menggantinya.</p>
+    @endif
+    <x-input-error :messages="$errors->get('evidence')" class="mt-2" />
+</div>

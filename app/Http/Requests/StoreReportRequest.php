@@ -20,6 +20,7 @@ class StoreReportRequest extends FormRequest
             'latitude'    => ['required', 'numeric', 'between:-90,90'],
             'longitude'   => ['required', 'numeric', 'between:-180,180'],
             'occurred_at' => ['required', 'date', 'before_or_equal:now'],
+            'evidence' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
         ];
     }
 }

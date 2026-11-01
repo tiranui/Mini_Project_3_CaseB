@@ -6,6 +6,7 @@ use App\Http\Requests\StoreReportRequest;
 use App\Models\Area;
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class ReportController extends Controller
 {
@@ -26,8 +27,12 @@ class ReportController extends Controller
 
     public function store(StoreReportRequest $request)
     {
-        $data = $request->validated();
+        $data = Arr::except($request->validated(), 'evidence');
         $data['status'] = Report::MENUNGGU_REVIEW;
+
+        if ($request->hasFile('evidence')) {
+            $data['evidence_path'] = $request->file('evidence')->store('evidence'); // disk privat (local)
+        }
 
         $request->user()->reports()->create($data);
 
